@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- SEO & Performance: description, canonical, social cards, and preconnects for faster crawl/load -->
+  <meta name="description" content="Plain Language Optimizer — a privacy-first, in-browser tool that highlights complex words and passive voice to make texts clearer and more accessible. No uploads or tracking." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="/" />
+  <meta name="theme-color" content="#0f172a" />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:title" content="Plain Language Optimizer – Privacy-First Readability Tool" />
+  <meta property="og:description" content="Highlight complex words and passive voice in your text locally — no uploads, no tracking. Improves clarity for students, patients, and the public." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Plain Language Optimizer" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Plain Language Optimizer" />
+  <meta name="twitter:description" content="Privacy-first, in-browser readability tool that suggests simpler words and flags passive voice." />
+
+  <!-- Preconnect / preload to help crawlers and speed up resource load -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+  <title>Plain Language Optimizer – Privacy-First Readability Tool</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-dyslexic-font@1.0.3/open-dyslexic.min.css">
+  <!-- Structured data for faster indexing and clearer search snippets -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Plain Language Optimizer",
+    "url": "/",
+    "description": "Privacy-first in-browser readability tool that highlights complex words and passive voice.",
+    "applicationCategory": "Utilities",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .dyslexia-mode {
+      font-family: "OpenDyslexic", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+      letter-spacing: 0.04em;
+      line-height: 1.6;
+    }
+    mark.highlight-complex {
+      background-color: #facc15;
+      padding: 0 0.1em;
+    }
+    mark.highlight-passive {
+      background-color: #bfdbfe;
+      padding: 0 0.1em;
+    }
+    .badge-pill {
+      border-radius: 9999px;
+    }
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background-color: rgba(148, 163, 184, 0.8);
+      border-radius: 9999px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-20">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h1 class="text-xl sm:text-2xl font-semibold tracking-tight flex items-center gap-2">
+          <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 ring-1 ring-emerald-500/40 text-emerald-300 text-lg font-bold">PL</span>
+          <span>Plain Language Optimizer</span>
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+          Make documents accessible, readable, and law-compliant — right in your browser. No login. No tracking. No uploads.
+        </p>
+      </div>
+      <div class="flex flex-col items-start sm:items-end gap-2 text-xs sm:text-sm">
+        <div class="inline-flex items-center gap-2 px-3 py-1 badge-pill bg-emerald-500/10 border border-emerald-400/40 text-emerald-200">
+          <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="font-medium">Privacy-First</span>
+          <span class="text-emerald-100/70">Your text never leaves this device.</span>
+        </div>
+        <div class="flex flex-wrap gap-1 text-[0.68rem] uppercase tracking-wide text-slate-400">
+          <span class="px-2 py-0.5 badge-pill border border-slate-700/80">Teachers</span>
+          <span class="px-2 py-0.5 badge-pill border border-slate-700/80">Government</span>
+          <span class="px-2 py-0.5 badge-pill border border-slate-700/80">Legal</span>
+          <span class="px-2 py-0.5 badge-pill border border-slate-700/80">Healthcare</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1">
+    <section class="max-w-6xl mx-auto px-4 py-6 sm:py-8 grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+      <!-- Left: Editor -->
+      <div class="flex flex-col gap-3">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-base sm:text-lg font-semibold text-slate-100">1. Paste or type your text</h2>
+            <p class="text-xs text-slate-400">Drafts, policies, patient instructions, homework — anything that needs to be clear.</p>
+          </div>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <button id="btnSample" class="px-3 py-1.5 rounded-md border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 text-slate-200">Load sample</button>
+            <button id="btnClear" class="px-3 py-1.5 rounded-md border border-slate-800 bg-slate-950 hover:bg-slate-900 text-slate-300">Clear</button>
+          </div>
+        </div>
+
+        <div class="relative">
+          <textarea id="inputText" class="w-full h-64 sm:h-80 resize-y bg-slate-950/60 border border-slate-800 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500/70 scrollbar-thin" placeholder="Paste your paragraph, email, policy, or assignment here..."></textarea>
+          <div class="absolute bottom-2 right-3 text-[0.65rem] text-slate-500 select-none">Processed locally · No cloud</div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+          <div class="inline-flex items-center gap-2">
+            <button id="btnAnalyze" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-emerald-500 text-slate-950 font-medium hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/70">
+              <span>Analyze & highlight</span>
+            </button>
+            <button id="btnCopy" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80 focus:outline-none focus:ring-2 focus:ring-slate-600/70">
+              <span>Copy clean text</span>
+            </button>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <label class="inline-flex items-center gap-1.5 cursor-pointer text-slate-300">
+              <input id="toggleDyslexia" type="checkbox" class="h-3.5 w-3.5 rounded border-slate-600 text-emerald-500 focus:ring-emerald-500" />
+              <span class="text-xs">Dyslexia-friendly font</span>
+            </label>
+            <div class="hidden sm:inline-block w-px h-4 bg-slate-800"></div>
+            <span class="text-[0.68rem] text-slate-500">Font: OpenDyslexic · Increased spacing & line height</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Analytics -->
+      <div class="flex flex-col gap-4">
+        <section class="border border-slate-800 rounded-lg bg-slate-950/60 p-3 sm:p-4 flex flex-col gap-3">
+          <div class="flex items-center justify-between gap-2">
+            <h2 class="text-sm sm:text-base font-semibold text-slate-100">2. Readability snapshot</h2>
+            <span id="gradeBadge" class="badge-pill px-3 py-1 text-xs border border-slate-700 text-slate-300 bg-slate-900/70">Waiting for text...</span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 text-xs">
+            <div class="p-2 rounded-md bg-slate-900/60 border border-slate-800 flex flex-col gap-1">
+              <span class="text-[0.7rem] uppercase tracking-wide text-slate-500">Grade level</span>
+              <span id="gradeLevel" class="text-sm font-semibold text-slate-100">–</span>
+              <span id="gradeLabel" class="text-[0.7rem] text-slate-400">Add at least one sentence.</span>
+            </div>
+            <div class="p-2 rounded-md bg-slate-900/60 border border-slate-800 flex flex-col gap-1">
+              <span class="text-[0.7rem] uppercase tracking-wide text-slate-500">Words</span>
+              <span id="wordCount" class="text-sm font-semibold text-slate-100">0</span>
+              <span id="sentenceCount" class="text-[0.7rem] text-slate-400">0 sentences</span>
+            </div>
+            <div class="p-2 rounded-md bg-slate-900/60 border border-slate-800 flex flex-col gap-1">
+              <span class="text-[0.7rem] uppercase tracking-wide text-slate-500">Complexity flags</span>
+              <span id="complexWordCount" class="text-sm font-semibold text-amber-300">0 complex words</span>
+              <span id="passiveCount" class="text-[0.7rem] text-indigo-300">0 passive sentences</span>
+            </div>
+          </div>
+
+          <div class="mt-1">
+            <div class="flex items-center justify-between text-[0.7rem] text-slate-400 mb-1">
+              <span>Target zone: 5th–8th grade for public-facing content</span>
+              <span id="readingTime" class="text-slate-500">–</span>
+            </div>
+            <div class="w-full h-1.5 rounded-full bg-slate-900 overflow-hidden">
+              <div id="gradeMeter" class="h-full w-0 rounded-full bg-emerald-500 transition-all duration-300"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="border border-slate-800 rounded-lg bg-slate-950/60 p-3 sm:p-4 flex flex-col gap-3 h-64 sm:h-72">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h2 class="text-sm sm:text-base font-semibold text-slate-100">3. Highlights & suggestions</h2>
+            <div class="flex flex-wrap gap-1.5 text-[0.68rem]">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 badge-pill bg-amber-500/10 border border-amber-400/40 text-amber-100">
+                <span class="h-2 w-2 rounded-full bg-amber-300"></span>Complex words
+              </span>
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 badge-pill bg-indigo-500/10 border border-indigo-400/40 text-indigo-100">
+                <span class="h-2 w-2 rounded-full bg-indigo-300"></span>Passive voice
+              </span>
+            </div>
+          </div>
+          <div id="outputPanel" class="flex-1 text-xs sm:text-sm text-slate-200 overflow-auto scrollbar-thin rounded-md border border-slate-900 bg-slate-950/60 p-2.5 leading-relaxed"></div>
+        </section>
+
+        <section class="border border-emerald-700/60 rounded-lg bg-emerald-500/5 p-3 sm:p-4 text-xs sm:text-[0.8rem] text-emerald-100 flex flex-col gap-2">
+          <div class="flex items-start gap-2">
+            <div class="mt-0.5 h-5 w-5 rounded-full border border-emerald-400/80 flex items-center justify-center text-[0.7rem] font-bold">ℹ</div>
+            <div>
+              <p class="font-semibold text-emerald-50 mb-1">Local-first & private</p>
+              <p>Your text is analyzed entirely in your browser using JavaScript. We do not send your content to any server, store it, or use cookies. You can safely paste drafts, medical notes, legal templates, or internal policies.</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-3 gap-2 mt-1">
+            <div>
+              <p class="font-semibold text-emerald-100 mb-0.5">Education</p>
+              <p class="text-emerald-200/90">Check assignments and handouts so students with different reading levels can understand the task.</p>
+            </div>
+            <div>
+              <p class="font-semibold text-emerald-100 mb-0.5">Government & Legal</p>
+              <p class="text-emerald-200/90">Quickly test whether policies, forms, and notices meet plain-language and accessibility standards.</p>
+            </div>
+            <div>
+              <p class="font-semibold text-emerald-100 mb-0.5">Healthcare & HR</p>
+              <p class="text-emerald-200/90">Simplify patient instructions, consent forms, and workplace policies for clearer decisions.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-900 bg-slate-950/95">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-2 text-[0.7rem] text-slate-500">
+      <p>Flesch–Kincaid readability score is an estimate. Always pair with user testing when possible.</p>
+      <p class="flex flex-wrap gap-3">
+        <span>Built to make accessibility the default, not an afterthought.</span>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const inputText = document.getElementById('inputText');
+    const btnAnalyze = document.getElementById('btnAnalyze');
+    const btnCopy = document.getElementById('btnCopy');
+    const btnClear = document.getElementById('btnClear');
+    const btnSample = document.getElementById('btnSample');
+    const toggleDyslexia = document.getElementById('toggleDyslexia');
+    const gradeLevelEl = document.getElementById('gradeLevel');
+    const gradeLabelEl = document.getElementById('gradeLabel');
+    const gradeBadgeEl = document.getElementById('gradeBadge');
+    const wordCountEl = document.getElementById('wordCount');
+    const sentenceCountEl = document.getElementById('sentenceCount');
+    const complexWordCountEl = document.getElementById('complexWordCount');
+    const passiveCountEl = document.getElementById('passiveCount');
+    const gradeMeterEl = document.getElementById('gradeMeter');
+    const outputPanel = document.getElementById('outputPanel');
+    const readingTimeEl = document.getElementById('readingTime');
+
+    const complexWordMap = {
+      'utilize': 'use',
+      'facilitate': 'help / make easier',
+      'leverage': 'use',
+      'commence': 'start',
+      'terminate': 'end',
+      'endeavor': 'try',
+      'approximately': 'about',
+      'assistance': 'help',
+      'purchase': 'buy',
+      'numerous': 'many',
+      'regarding': 'about',
+      'subsequent': 'later / next',
+      'prior to': 'before',
+      'in order to': 'to',
+      'expedite': 'speed up',
+      'implement': 'use / start',
+      'initiate': 'start',
+      'endeavour': 'try',
+      'viable': 'workable',
+      'mitigate': 'reduce',
+      'optimize': 'improve',
+      'allocate': 'give / assign',
+      'collaborate': 'work together',
+      'disseminate': 'share / spread'
+    };
+
+    function countSyllables(word) {
+      word = word.toLowerCase().replace(/[^a-z]/g, '');
+      if (!word) return 0;
+      const exceptions = {
+        'the': 1,
+        'people': 2,
+        'every': 2,
+        'business': 2,
+        'accessibility': 6
+      };
+      if (exceptions[word]) return exceptions[word];
+      let syllableCount = 0;
+      const vowels = 'aeiouy';
+      let prevIsVowel = false;
+      for (let char of word) {
+        const isVowel = vowels.includes(char);
+        if (isVowel && !prevIsVowel) {
+          syllableCount++;
+        }
+        prevIsVowel = isVowel;
+      }
+      if (word.endsWith('e')) {
+        syllableCount--;
+      }
+      if (syllableCount === 0) syllableCount = 1;
+      return syllableCount;
+    }
+
+    function splitSentences(text) {
+      return text
+        .replace(/\s+/g, ' ')
+        .split(/(?<=[.!?])\s+(?=[A-Z0-9])/)
+        .filter(s => s.trim().length > 0);
+    }
+
+    function analyzeText(rawText) {
+      const text = rawText.trim();
+      if (!text) {
+        return {
+          words: 0,
+          sentences: 0,
+          syllables: 0,
+          grade: null,
+          gradeLabel: 'Add at least one sentence.',
+          flags: {
+            complexWords: [],
+            passiveSentences: []
+          },
+          readingTime: null
+        };
+      }
+
+      const sentences = splitSentences(text);
+      const wordMatches = text.match(/[\w'-]+/g) || [];
+      const words = wordMatches.length;
+      let syllables = 0;
+      wordMatches.forEach(w => syllables += countSyllables(w));
+
+      let grade = null;
+      let gradeLabel = '';
+      if (sentences.length > 0 && words > 0) {
+        const ASL = words / sentences.length;
+        const ASW = syllables / words;
+        const score = 206.835 - 1.015 * ASL - 84.6 * ASW;
+        const gradeLevel = 0.39 * ASL + 11.8 * ASW - 15.59;
+        grade = Math.max(0, Math.round(gradeLevel * 10) / 10);
+        if (grade <= 4) gradeLabel = 'Very easy to read (early elementary school).';
+        else if (grade <= 6) gradeLabel = 'Easy to read — good for broad public audiences.';
+        else if (grade <= 8) gradeLabel = 'Plain language — suitable for most adults.';
+        else if (grade <= 12) gradeLabel = 'Fairly complex — consider shortening sentences or words.';
+        else gradeLabel = 'Very complex — likely college level text.';
+      } else {
+        gradeLabel = 'Add at least one sentence.';
+      }
+
+      const complexWords = [];
+      const textLower = text.toLowerCase();
+      Object.keys(complexWordMap).forEach(key => {
+        const pattern = new RegExp('\\b' + key.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '\\b', 'gi');
+        if (pattern.test(textLower)) {
+          complexWords.push(key);
+        }
+      });
+
+      const passiveSentences = [];
+      const beForms = ['is','am','are','was','were','be','been','being'];
+      const passiveRegex = new RegExp('\\b(' + beForms.join('|') + ')\\b\\s+\\w+ed(\\b|[^a-z])', 'i');
+      sentences.forEach((s, index) => {
+        if (passiveRegex.test(s) && !/\\b(by the way|by the name)\\b/i.test(s)) {
+          passiveSentences.push(index);
+        }
+      });
+
+      const wordsPerMinute = 200;
+      const minutes = words / wordsPerMinute;
+      let readingTime = '';
+      if (minutes < 0.5) readingTime = '< 30 sec read';
+      else if (minutes < 1) readingTime = '< 1 min read';
+      else readingTime = Math.round(minutes) + ' min read';
+
+      return {
+        words,
+        sentences: sentences.length,
+        syllables,
+        grade,
+        gradeLabel,
+        flags: {
+          complexWords,
+          passiveSentences
+        },
+        sentencesArray: sentences,
+        readingTime
+      };
+    }
+
+    function highlightText(rawText, analysis) {
+      if (!rawText.trim()) return '';
+      const sentences = analysis.sentencesArray || splitSentences(rawText);
+      const highlightedSentences = sentences.map((sentence, index) => {
+        let processed = sentence;
+        Object.entries(complexWordMap).forEach(([complex, simple]) => {
+          const pattern = new RegExp('\\b' + complex.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '\\b', 'gi');
+          processed = processed.replace(pattern, match => {
+            return `<mark class="highlight-complex" title="Try: ${simple}">${match}</mark>`;
+          });
+        });
+        if (analysis.flags.passiveSentences.includes(index)) {
+          processed = `<mark class="highlight-passive" title="Possible passive voice. Can you rephrase in active voice?">${processed}</mark>`;
+        }
+        return processed;
+      });
+      let rebuilt = highlightedSentences.join(' ');
+      return rebuilt.replace(/\n/g, '<br>');
+    }
+
+    function updateUI() {
+      const text = inputText.value;
+      const analysis = analyzeText(text);
+
+      wordCountEl.textContent = analysis.words;
+      sentenceCountEl.textContent = `${analysis.sentences} sentence${analysis.sentences === 1 ? '' : 's'}`;
+      complexWordCountEl.textContent = `${analysis.flags.complexWords.length} complex word${analysis.flags.complexWords.length === 1 ? '' : 's'}`;
+      passiveCountEl.textContent = `${analysis.flags.passiveSentences.length} passive sentence${analysis.flags.passiveSentences.length === 1 ? '' : 's'}`;
+      readingTimeEl.textContent = analysis.readingTime || '–';
+
+      if (analysis.grade === null) {
+        gradeLevelEl.textContent = '–';
+        gradeLabelEl.textContent = analysis.gradeLabel;
+        gradeBadgeEl.textContent = 'Waiting for text...';
+        gradeBadgeEl.className = 'badge-pill px-3 py-1 text-xs border border-slate-700 text-slate-300 bg-slate-900/70';
+        gradeMeterEl.style.width = '0%';
+      } else {
+        gradeLevelEl.textContent = analysis.grade.toFixed(1);
+        gradeLabelEl.textContent = analysis.gradeLabel;
+        gradeBadgeEl.textContent = `Approx. ${analysis.grade.toFixed(1)} grade level`;
+
+        let colorClass = 'bg-emerald-500 border-emerald-400/70 text-slate-950';
+        if (analysis.grade > 10) colorClass = 'bg-rose-500 border-rose-400/70 text-slate-950';
+        else if (analysis.grade > 8) colorClass = 'bg-amber-400 border-amber-300/70 text-slate-950';
+        gradeBadgeEl.className = `badge-pill px-3 py-1 text-xs font-medium ${colorClass}`;
+
+        const clamped = Math.max(0, Math.min(analysis.grade, 14));
+        const width = (clamped / 14) * 100;
+        gradeMeterEl.style.width = `${width}%`;
+        gradeMeterEl.classList.remove('bg-emerald-500', 'bg-amber-400', 'bg-rose-500');
+        if (analysis.grade <= 8) gradeMeterEl.classList.add('bg-emerald-500');
+        else if (analysis.grade <= 10) gradeMeterEl.classList.add('bg-amber-400');
+        else gradeMeterEl.classList.add('bg-rose-500');
+      }
+
+      outputPanel.innerHTML = highlightText(text, analysis) || '<span class="text-slate-600">Run an analysis to see highlights, suggestions, and passive voice.</span>';
+    }
+
+    btnAnalyze.addEventListener('click', () => {
+      updateUI();
+    });
+
+    inputText.addEventListener('input', () => {
+      const text = inputText.value.trim();
+      if (!text) {
+        updateUI();
+      }
+    });
+
+    btnCopy.addEventListener('click', async () => {
+      const text = inputText.value;
+      if (!text.trim()) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        btnCopy.textContent = 'Copied!';
+        setTimeout(() => {
+          btnCopy.textContent = 'Copy clean text';
+        }, 1200);
+      } catch (e) {
+        btnCopy.textContent = 'Press Ctrl+C to copy';
+        setTimeout(() => {
+          btnCopy.textContent = 'Copy clean text';
+        }, 2000);
+      }
+    });
+
+    btnClear.addEventListener('click', () => {
+      inputText.value = '';
+      updateUI();
+      inputText.focus();
+    });
+
+    btnSample.addEventListener('click', () => {
+      const sample = `This document is intended to facilitate understanding of our workplace safety procedures. Prior to commencing any task, employees are required to review the relevant guidelines. If the instructions are not understood, assistance should be requested.
+
+Patient instructions: Take one tablet twice per day with water. If you feel dizzy, call your nurse. Do not operate heavy machines until you talk to your doctor.
+
+Plain language version: Read these steps before you start work. If anything is not clear, ask your manager for help.`;
+      inputText.value = sample;
+      updateUI();
+    });
+
+    toggleDyslexia.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        document.body.classList.add('dyslexia-mode');
+      } else {
+        document.body.classList.remove('dyslexia-mode');
+      }
+    });
+
+    updateUI();
+  </script>
+</body>
+</html>
